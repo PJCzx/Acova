@@ -4,13 +4,12 @@ var acova = require('./lib/acova.js');
 var app = express();
 
 
-var GPIO_POS = 17;
-var GPIO_NEG = 27;
+var GPIO_POS = 15;
+var GPIO_NEG = 16;
 
 var myHeatingSystem = new acova(GPIO_POS, GPIO_NEG);
 
 gpio.setup(7, gpio.DIR_OUT);
-
 gpio.setup(GPIO_POS, gpio.DIR_OUT);
 gpio.setup(GPIO_NEG, gpio.DIR_OUT);
 
