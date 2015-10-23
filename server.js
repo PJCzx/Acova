@@ -3,9 +3,41 @@ var express = require('express');
 var acova = require('./lib/acova.js');
 var app = express();
 
-var myHeatingSystem = new acova();
+
+var GPIO_POS = 17;
+var GPIO_NEG = 27;
+
+var myHeatingSystem = new acova(GPIO_POS, GPIO_NEG);
 
 gpio.setup(7, gpio.DIR_OUT);
+
+gpio.setup(GPIO_POS, gpio.DIR_OUT);
+gpio.setup(GPIO_NEG, gpio.DIR_OUT);
+
+function setPositiveAlternance(value) {
+    gpio.write(GPIO_POS, value, function(err) {
+        if (err) throw err;
+        else {
+          console.log('GPIO_POS is now', value ? "High" : "Low");
+        }
+    });
+}
+
+function setNegativeAlternance(value) {
+    gpio.write(GPIO_NEG, value, function(err) {
+        if (err) throw err;
+        else {
+          console.log('GPIO_NEG is now', value ? "High" : "Low");
+        }
+    });
+}
+
+function gpioApply () {
+  console.log(Date());
+  setPositiveAlternance(this.gpioPosState);
+  setNegativeAlternance(this.gpioNegState);
+};
+
 
 app.get('/', function (req, res) {
   res.send('<ul><li><a href="/comfort">Confort</a></li><li><a href="/comfort-minus-one">-1</a></li><li><a href="/comfort-minus-two">-2</a></li><li><a href="/eco">Eco</a></li><li><a href="/no-frost">No Frost</a></li><li><a href="/parking">Parking</a></li></ul>');
