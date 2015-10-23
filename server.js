@@ -14,7 +14,7 @@ gpio.setup(7, gpio.DIR_OUT);
 gpio.setup(GPIO_POS, gpio.DIR_OUT);
 gpio.setup(GPIO_NEG, gpio.DIR_OUT);
 
-function setPositiveAlternance(value) {
+setPositiveAlternance = function (value) {
     gpio.write(GPIO_POS, value, function(err) {
         if (err) throw err;
         else {
@@ -23,7 +23,7 @@ function setPositiveAlternance(value) {
     });
 }
 
-function setNegativeAlternance(value) {
+setNegativeAlternance = function (value) {
     gpio.write(GPIO_NEG, value, function(err) {
         if (err) throw err;
         else {
@@ -32,7 +32,7 @@ function setNegativeAlternance(value) {
     });
 }
 
-function gpioApply () {
+gpioApply = function  () {
   console.log(Date());
   setPositiveAlternance(this.gpioPosState);
   setNegativeAlternance(this.gpioNegState);
