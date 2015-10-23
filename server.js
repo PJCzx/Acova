@@ -1,4 +1,4 @@
-//var gpio = require('rpi-gpio');
+var gpio = require('rpi-gpio');
 var express = require('express');
 var acova = require('./lib/acova.js');
 var app = express();
