@@ -1,0 +1,14 @@
+{
+  "name": "acova",
+  "version": "1.0.0",
+  "description": "Allows you to create an Acova wiring control",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "rpi-gpio": "^0.7.0"
+  }
+}
