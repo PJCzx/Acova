@@ -32,7 +32,7 @@ setNegativeAlternance = function (value) {
 }
 
 gpioApply = function  () {
-  console.log(Date());
+  console.log(Date(), this.gpioPosState, this.gpioNegState);
   setPositiveAlternance(this.gpioPosState);
   setNegativeAlternance(this.gpioNegState);
 };
