@@ -17,7 +17,7 @@ setPositiveAlternance = function (value) {
     gpio.write(GPIO_POS, value, function(err) {
         if (err) throw err;
         else {
-          console.log('GPIO_POS is now', value ? "High" : "Low");
+          console.log('GPIO_POS is now', value === true ? "High" : "Low");
         }
     });
 }
@@ -26,7 +26,7 @@ setNegativeAlternance = function (value) {
     gpio.write(GPIO_NEG, value, function(err) {
         if (err) throw err;
         else {
-          console.log('GPIO_NEG is now', value ? "High" : "Low");
+          console.log('GPIO_NEG is now', value === true ? "High" : "Low");
         }
     });
 }
