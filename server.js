@@ -1,15 +1,16 @@
-//before spliting it into a separated module
-var gpio = require('rpi-gpio');
-gpio.setup(7, gpio.DIR_OUT);
-
 var express = require('express');
+
 var acova = require('./lib/acova.js');
+var parking = require('./lib/parking.js');
+
 var app = express();
 
 var GPIO_POS = 15;
 var GPIO_NEG = 16;
+var GPIO_PARKING = 7;
 
 var myHeatingSystem = new acova(GPIO_POS, GPIO_NEG);
+var myParkingSystem = new parking(GPIO_PARKING);
 
 
 app.get('/', function (req, res) {
@@ -35,17 +36,9 @@ app.get('/', function (req, res) {
   res.send('No frost');
 });
 
-//before spliting it into a separated module
 app.get('/parking', function (req, res) {
+  myParkingSystem.open();
   res.send('Open the gate I said bitch! :)');
-  console.log('The garage dor has been open at', Date());
-  gpio.write(7, true, function() {
-    console.log("Pin 7 HIGH");  
-    setTimeout(function() {
-      gpio.write(false);
-            console.log("Pin 7 LOW");
-    } , 1000);
-  });
 });
 
 var server = app.listen(3001, function () {
