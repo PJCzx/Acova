@@ -12,7 +12,7 @@ var GPIO_PARKING = 7;
 var myHeatingSystem = new acova(GPIO_POS, GPIO_NEG);
 var myParkingSystem = new parking(GPIO_PARKING);
 
-var response = '<ul><li><a href="/comfort">Confort</a></li><li><a href="/comfort-minus-one">-1</a></li><li><a href="/comfort-minus-two">-2</a></li><li><a href="/eco">Eco</a></li><li><a href="/no-frost">No Frost</a></li><li><a href="/parking">Parking</a></li></ul><br><strong>Current: ' + myHeatingSystem.getCurrentStateToString() + '</strong>';
+var response = '<ul><li><a href="/comfort">Confort</a></li><li><a href="/comfort-minus-one">-1</a></li><li><a href="/comfort-minus-two">-2</a></li><li><a href="/eco">Eco</a></li><li><a href="/no-frost">No Frost</a></li><li><a href="/parking">Parking</a></li></ul><br><strong>Current: ' + myHeatingSystem.getCurrentStateToString() + '(' + myHeatingSystem.getCurrentState() + ')</strong>';
 
 app.get('/', function (req, res) {
   res.send(response);
