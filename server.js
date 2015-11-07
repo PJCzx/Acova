@@ -18,12 +18,12 @@ app.get('/', function (req, res) {
   res.send(response);
 })
 .get('/comfort', function (req, res) {
-  res.send(response);
   myHeatingSystem.setConfort();
+  res.send(response);
 })
 .get('/comfort-minus-one', function (req, res) {
-  res.send(response);
   myHeatingSystem.setConfortMinusOne();
+  res.send(response);
 })
 .get('/comfort-minus-two', function (req, res) {
   myHeatingSystem.setConfortMinusTwo();
