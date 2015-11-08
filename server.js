@@ -13,7 +13,7 @@ var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG);
 var myParkingSystem = new parking(GPIO_PARKING);
 
 var response = function () {
-  return '<ul><li><a href="/comfort">Confort</a></li><li><a href="/comfort-minus-one">-1</a></li><li><a href="/comfort-minus-two">-2</a></li><li><a href="/eco">Eco</a></li><li><a href="/no-frost">No Frost</a></li><li><a href="/parking">Parking</a></li></ul><br><strong>Current: ' + myHeatingSystem.getCurrentStateToString() + ' (' + myHeatingSystem.getCurrentState() + ')</strong>';
+  return '<ul><li><a href="/comfort">Confort</a></li><li><a href="/comfort-minus-one">-1</a></li><li><a href="/comfort-minus-two">-2</a></li><li><a href="/eco">Eco</a></li><li><a href="/no-frost">No Frost</a></li><li><a href="/off">Off</a></li><li><a href="/parking">Parking</a></li></ul><br><strong>Current: ' + myHeatingSystem.getCurrentStateToString() + ' (' + myHeatingSystem.getCurrentState() + ')</strong>';
 };
 
 app.get('/', function (req, res) {
@@ -37,6 +37,10 @@ app.get('/', function (req, res) {
 })
 .get('/no-frost', function (req, res) {
   myHeatingSystem.setNoFrost();
+  res.send(response());
+})
+.get('/off', function (req, res) {
+  myHeatingSystem.setOff();
   res.send(response());
 });
 
