@@ -9,7 +9,7 @@ var GPIO_POS = 15;
 var GPIO_NEG = 16;
 var GPIO_PARKING = 7;
 
-var myHeatingSystem = new acova(GPIO_POS, GPIO_NEG);
+var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG);
 var myParkingSystem = new parking(GPIO_PARKING);
 
 var response = function () {
