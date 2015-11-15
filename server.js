@@ -14,6 +14,8 @@ var GPIO_PARKING = 7;
 var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG);
 var myParkingSystem = new parking(GPIO_PARKING);
 
+var scheduledJobs = {};
+
 //TIME RULES
 var weekMornings = new schedule.RecurrenceRule();
 weekMornings.dayOfWeek = [1, 2, 3, 4, 5]; //MON, THU, WEN, TUR, FRI
@@ -44,37 +46,54 @@ weekendEvenings.duration = 1000*60*60*6; //6h
 weekendEvenings.callback = function() {myHeatingSystem.setConfortMinusTwo();};
 
 //TIME ACTIONS
-var wm = schedule.scheduleJob(weekMornings, function() {
-    console.log(Date(), 'This is a Week Morning event');
-    myHeatingSystem.setConfort();
-    if(weekMornings.duration !== undefined) setTimeout(weekMornings.callback, weekMornings.duration);
-});
-//wm.cancel();
+var scheduleJobs = function() { 
+  scheduledJobs.wm = schedule.scheduleJob(weekMornings, function() {
+      console.log(Date(), 'This is a Week Morning event');
+      myHeatingSystem.setConfort();
+      if(weekMornings.duration !== undefined) setTimeout(weekMornings.callback, weekMornings.duration);
+  });
+ 
+  scheduledJobs.we = schedule.scheduleJob(weekEvenings, function() {
+      console.log(Date(), 'This is a Week Evening event');
+      myHeatingSystem.setConfort();
+      if(weekMornings.weekEvenings !== undefined) setTimeout(weekEvenings.callback, weekEvenings.duration);
+  });
+ 
+  scheduledJobs.wem = schedule.scheduleJob(weekendMornings, function() {
+      console.log(Date(), 'This is a Week-End Morning event');
+      myHeatingSystem.setConfort();
+      if(weekendMornings.weekEvenings !== undefined) setTimeout(weekendMornings.callback, weekendMornings.duration);
+  });
+ 
+  scheduledJobs.wee = schedule.scheduleJob(weekendEvenings, function() {
+      console.log(Date(), 'This is a Week-End Evening event');
+      myHeatingSystem.setConfort();
+      if(weekendEvenings.weekEvenings !== undefined) setTimeout(weekendEvenings.callback, weekendEvenings.duration);
+  });
+};
+scheduleJobs();
 
-var we = schedule.scheduleJob(weekEvenings, function() {
-    console.log(Date(), 'This is a Week Evening event');
-    myHeatingSystem.setConfort();
-    if(weekMornings.weekEvenings !== undefined) setTimeout(weekEvenings.callback, weekEvenings.duration);
-});
-//we.cancel();
-
-var wem = schedule.scheduleJob(weekendMornings, function() {
-    console.log(Date(), 'This is a Week-End Morning event');
-    myHeatingSystem.setConfort();
-    if(weekendMornings.weekEvenings !== undefined) setTimeout(weekendMornings.callback, weekendMornings.duration);
-});
-//wem.cancel();
-
-var wee = schedule.scheduleJob(weekendEvenings, function() {
-    console.log(Date(), 'This is a Week-End Evening event');
-    myHeatingSystem.setConfort();
-    if(weekendEvenings.weekEvenings !== undefined) setTimeout(weekendEvenings.callback, weekendEvenings.duration);
-});
-//wee.cancel();
-
+var cancelScheduledJobs = function () {
+  scheduledJobs.wm.cancel();
+  scheduledJobs.we.cancel();
+  scheduledJobs.wem.cancel();
+  scheduledJobs.wee.cancel();
+};
 
 var response = function () {
-  return '<ul><li><a href="/comfort">Confort</a></li><li><a href="/comfort-minus-one">-1</a></li><li><a href="/comfort-minus-two">-2</a></li><li><a href="/eco">Eco</a></li><li><a href="/no-frost">No Frost</a></li><li><a href="/off">Off</a></li><li><a href="/parking">Parking</a></li></ul><br><strong>Current: ' + myHeatingSystem.getCurrentStateToString() + ' (' + myHeatingSystem.getCurrentState() + ')</strong>';
+  var resp = "";
+  resp += '<li><a href="/cancel">Cancel Jobs</a></li>';
+  resp += '<li><a href="/schedule">Schedule Jobs</a></li>';
+  resp += '<li><a href="/comfort">Confort</a></li>';
+  resp += '<li><a href="/comfort-minus-one">-1</a></li>';
+  resp += '<li><a href="/comfort-minus-two">-2</a></li>';
+  resp += '<li><a href="/eco">Eco</a></li>';
+  resp += '<li><a href="/no-frost">No Frost</a></li>';
+  resp += '<li><a href="/off">Off</a></li>';
+  resp += '<li><a href="/parking">Parking</a></li>';
+  resp += '<br>';
+  resp += '<strong>Current: ' + myHeatingSystem.getCurrentStateToString() + ' (' + myHeatingSystem.getCurrentState() + ')</strong>';
+  return resp;
 };
 
 //ROUTING
@@ -103,6 +122,14 @@ app.get('/', function (req, res) {
 })
 .get('/off', function (req, res) {
   myHeatingSystem.setOff();
+  res.send(response());
+})
+.get('/cancel', function (req, res) {
+  cancelScheduledJobs();
+  res.send(response());
+})
+.get('/schedule', function (req, res) {
+  scheduleJobs();
   res.send(response());
 });
 
