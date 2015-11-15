@@ -3,7 +3,7 @@ var schedule = require('node-schedule');
 
 
 var acova = require('./lib/acova.js');
-//var parking = require('./lib/parking.js');
+var parking = require('./lib/parking.js');
 
 var app = express();
 
@@ -12,7 +12,7 @@ var GPIO_NEG = 16;
 var GPIO_PARKING = 7;
 
 var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG);
-//var myParkingSystem = new parking(GPIO_PARKING);
+var myParkingSystem = new parking(GPIO_PARKING);
 
 //TIME RULES
 var weekMornings = new schedule.RecurrenceRule();
