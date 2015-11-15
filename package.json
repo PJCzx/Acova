@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.13.3",
+    "node-schedule": "^0.5.1",
     "rpi-gpio": "^0.7.0"
   }
 }
