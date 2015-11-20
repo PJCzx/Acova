@@ -70,6 +70,7 @@ var scheduleJobs = function() {
       myHeatingSystem.setConfort();
       if(weekendEvenings.weekEvenings !== undefined) setTimeout(weekendEvenings.callback, weekendEvenings.duration);
   });
+  console.log("Jobs SCHEDULED");  
 };
 scheduleJobs();
 
@@ -78,6 +79,7 @@ var cancelScheduledJobs = function () {
   scheduledJobs.we.cancel();
   scheduledJobs.wem.cancel();
   scheduledJobs.wee.cancel();
+  console.log("Jobs CANCELED");
 };
 
 var response = function () {
