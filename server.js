@@ -11,8 +11,8 @@ var GPIO_POS = 15;
 var GPIO_NEG = 16;
 var GPIO_PARKING = 7;
 
-var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG);
-var myParkingSystem = new parking(GPIO_PARKING);
+var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG, false).init();
+var myParkingSystem = new parking(GPIO_PARKING, false);
 
 var scheduledJobs = {};
 
