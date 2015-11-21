@@ -56,19 +56,19 @@ var scheduleJobs = function() {
   scheduledJobs.we = schedule.scheduleJob(weekEvenings, function() {
       console.log(Date(), 'This is a Week Evening event');
       myHeatingSystem.setConfort();
-      if(weekMornings.weekEvenings !== undefined) setTimeout(weekEvenings.callback, weekEvenings.duration);
+      if(weekEvenings.duration !== undefined) setTimeout(weekEvenings.callback, weekEvenings.duration);
   });
  
   scheduledJobs.wem = schedule.scheduleJob(weekendMornings, function() {
       console.log(Date(), 'This is a Week-End Morning event');
       myHeatingSystem.setConfort();
-      if(weekendMornings.weekEvenings !== undefined) setTimeout(weekendMornings.callback, weekendMornings.duration);
+      if(weekendMornings.duration !== undefined) setTimeout(weekendMornings.callback, weekendMornings.duration);
   });
  
   scheduledJobs.wee = schedule.scheduleJob(weekendEvenings, function() {
       console.log(Date(), 'This is a Week-End Evening event');
       myHeatingSystem.setConfort();
-      if(weekendEvenings.weekEvenings !== undefined) setTimeout(weekendEvenings.callback, weekendEvenings.duration);
+      if(weekendEvenings.duration !== undefined) setTimeout(weekendEvenings.callback, weekendEvenings.duration);
   });
   console.log("Jobs SCHEDULED");  
 };
