@@ -14,61 +14,62 @@ var GPIO_PARKING = 7;
 var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG).init();
 var myParkingSystem = new parking(GPIO_PARKING, false);
 
+var rules = {};
 var scheduledJobs = {};
 
 //TIME RULES
-var weekMornings = new schedule.RecurrenceRule();
-weekMornings.dayOfWeek = [1, 2, 3, 4, 5]; //MON, THU, WEN, TUR, FRI
-weekMornings.hour = 6;
-weekMornings.minute = 30;
-weekMornings.duration = 1000*60*60*2; //2h
-weekMornings.callback = function() {myHeatingSystem.setEco();};
+rules.weekMornings = new schedule.RecurrenceRule();
+rules.weekMornings.dayOfWeek = [1, 2, 3, 4, 5]; //MON, THU, WEN, TUR, FRI
+rules.weekMornings.hour = 6;
+rules.weekMornings.minute = 00;
+rules.weekMornings.duration = 1000*60*60*2; //2h
+rules.weekMornings.callback = function() { myHeatingSystem.setEco(); };
 
-var weekEvenings = new schedule.RecurrenceRule();
-weekEvenings.dayOfWeek = [1, 2, 3, 4, 5]; //MON, THU, WEN, TUR, FRI
-weekEvenings.hour = 18;
-weekEvenings.minute = 30;
-weekEvenings.duration = 1000*60*60*4; //4h
-weekEvenings.callback = function() {myHeatingSystem.setConfortMinusTwo();};
+rules.weekEvenings = new schedule.RecurrenceRule();
+rules.weekEvenings.dayOfWeek = [1, 2, 3, 4, 5]; //MON, THU, WEN, TUR, FRI
+rules.weekEvenings.hour = 18;
+rules.weekEvenings.minute = 30;
+rules.weekEvenings.duration = 1000*60*60*3; //3h
+rules.weekEvenings.callback = function() { myHeatingSystem.setConfortMinusTwo(); };
 
-var weekendMornings = new schedule.RecurrenceRule();
-weekendMornings.dayOfWeek = [6, 7]; //SAT, SUN
-weekendMornings.hour = 8;
-weekendMornings.minute = 30;
-weekendMornings.duration = 1000*60*60*3; //3h
-weekendMornings.callback = function() {myHeatingSystem.setEco();};
+rules.weekendMornings = new schedule.RecurrenceRule();
+rules.weekendMornings.dayOfWeek = [0, 6]; //SUN, SAT
+rules.weekendMornings.hour = 8;
+rules.weekendMornings.minute = 30;
+rules.weekendMornings.duration = 1000*60*60*3; //3h
+rules.weekendMornings.callback = function() { myHeatingSystem.setEco(); };
 
-var weekendEvenings = new schedule.RecurrenceRule();
-weekendEvenings.dayOfWeek = [6, 7]; //SAT, SUN
-weekendEvenings.hour = 17;
-weekendEvenings.minute = 30;
-weekendEvenings.duration = 1000*60*60*6; //6h
-weekendEvenings.callback = function() {myHeatingSystem.setConfortMinusTwo();};
+rules.weekendEvenings = new schedule.RecurrenceRule();
+rules.weekendEvenings.dayOfWeek = [0, 6]; //SUN, SAT
+rules.weekendEvenings.hour = 17;
+rules.weekendEvenings.minute = 30;
+rules.weekendEvenings.duration = 1000*60*60*6; //6h
+rules.weekendEvenings.callback = function() { myHeatingSystem.setConfortMinusTwo(); };
 
 //TIME ACTIONS
 var scheduleJobs = function() { 
-  scheduledJobs.wm = schedule.scheduleJob(weekMornings, function() {
+  scheduledJobs.wm = schedule.scheduleJob(rules.weekMornings, function() {
       console.log(Date(), 'This is a Week Morning event');
       myHeatingSystem.setConfort();
-      if(weekMornings.duration !== undefined) setTimeout(weekMornings.callback, weekMornings.duration);
+      if(rules.weekMornings.duration !== undefined) setTimeout(rules.weekMornings.callback, rules.weekMornings.duration);
   });
  
-  scheduledJobs.we = schedule.scheduleJob(weekEvenings, function() {
+  scheduledJobs.we = schedule.scheduleJob(rules.weekEvenings, function() {
       console.log(Date(), 'This is a Week Evening event');
       myHeatingSystem.setConfort();
-      if(weekEvenings.duration !== undefined) setTimeout(weekEvenings.callback, weekEvenings.duration);
+      if(rules.weekEvenings.duration !== undefined) setTimeout(rules.weekEvenings.callback, rules.weekEvenings.duration);
   });
  
-  scheduledJobs.wem = schedule.scheduleJob(weekendMornings, function() {
+  scheduledJobs.wem = schedule.scheduleJob(rules.weekendMornings, function() {
       console.log(Date(), 'This is a Week-End Morning event');
       myHeatingSystem.setConfort();
-      if(weekendMornings.duration !== undefined) setTimeout(weekendMornings.callback, weekendMornings.duration);
+      if(rules.weekendMornings.duration !== undefined) setTimeout(rules.weekendMornings.callback, rules.weekendMornings.duration);
   });
  
-  scheduledJobs.wee = schedule.scheduleJob(weekendEvenings, function() {
+  scheduledJobs.wee = schedule.scheduleJob(rules.weekendEvenings, function() {
       console.log(Date(), 'This is a Week-End Evening event');
       myHeatingSystem.setConfort();
-      if(weekendEvenings.duration !== undefined) setTimeout(weekendEvenings.callback, weekendEvenings.duration);
+      if(rules.weekendEvenings.duration !== undefined) setTimeout(rules.weekendEvenings.callback, rules.weekendEvenings.duration);
   });
   console.log("Jobs SCHEDULED");  
 };
