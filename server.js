@@ -11,11 +11,20 @@ var GPIO_POS = 15;
 var GPIO_NEG = 16;
 var GPIO_PARKING = 7;
 
-var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG).init();
+var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG, false).init();
 var myParkingSystem = new parking(GPIO_PARKING, false);
 
 var rules = {};
 var scheduledJobs = {};
+var data = {};
+//fake data
+data.temperature = {};
+data.humidity = {};
+
+setInterval(function() { 
+  data.temperature[new Date()] = 20 + 10 * Math.random();
+  data.humidity[new Date()] = Math.random();
+}, 1000);
 
 //TIME RULES
 rules.weekMornings = new schedule.RecurrenceRule();
@@ -83,62 +92,57 @@ var cancelScheduledJobs = function () {
   console.log("Jobs CANCELED");
 };
 
-var response = function () {
-  var resp = "";
-  resp += '<li><a href="/cancel">Cancel Jobs</a></li>';
-  resp += '<li><a href="/schedule">Schedule Jobs</a></li>';
-  resp += '<li><a href="/comfort">Confort</a></li>';
-  resp += '<li><a href="/comfort-minus-one">-1</a></li>';
-  resp += '<li><a href="/comfort-minus-two">-2</a></li>';
-  resp += '<li><a href="/eco">Eco</a></li>';
-  resp += '<li><a href="/no-frost">No Frost</a></li>';
-  resp += '<li><a href="/off">Off</a></li>';
-  resp += '<li><a href="/parking">Parking</a></li>';
-  resp += '<br>';
-  resp += '<strong>Current: ' + myHeatingSystem.getCurrentStateToString() + ' (' + myHeatingSystem.getCurrentState() + ')</strong>';
-  return resp;
-};
+//Static files
+app.use(express.static('public'));
+app.use('/', express.static('public'));
 
 //ROUTING
-app.get('/', function (req, res) {
-  res.send(response());
+app.get('/status', function (req, res) {
+  var resp = {
+    text: myHeatingSystem.getCurrentStateToString(),
+    value: myHeatingSystem.getCurrentState()
+  };
+  res.send(resp);
 })
 .get('/comfort', function (req, res) {
   myHeatingSystem.setConfort();
-  res.send(response());
+  res.redirect('/');
 })
 .get('/comfort-minus-one', function (req, res) {
   myHeatingSystem.setConfortMinusOne();
-  res.send(response());
+  res.redirect('/');
 })
 .get('/comfort-minus-two', function (req, res) {
   myHeatingSystem.setConfortMinusTwo();
-  res.send(response());
+  res.redirect('/');
 })
 .get('/eco', function (req, res) {
   myHeatingSystem.setEco();
-  res.send(response());
+  res.redirect('/');
 })
 .get('/no-frost', function (req, res) {
   myHeatingSystem.setNoFrost();
-  res.send(response());
+  res.redirect('/');
 })
 .get('/off', function (req, res) {
   myHeatingSystem.setOff();
-  res.send(response());
+  res.redirect('/');
 })
 .get('/cancel', function (req, res) {
   cancelScheduledJobs();
-  res.send(response());
+  res.redirect('/');
 })
 .get('/schedule', function (req, res) {
   scheduleJobs();
-  res.send(response());
+  res.redirect('/');
+})
+.get('/data', function (req, res) {
+  res.send(data);
 });
 
 app.get('/parking', function (req, res) {
   //myParkingSystem.open();
-  res.send(response());
+  res.redirect('/');
 });
 
 var server = app.listen(3001, function () {

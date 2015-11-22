@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <li><a href="/cancel">Cancel Jobs</a></li>
+  <li><a href="/schedule">Schedule Jobs</a></li>
+  <li><a href="/comfort">Confort</a></li>
+  <li><a href="/comfort-minus-one">-1</a></li>
+  <li><a href="/comfort-minus-two">-2</a></li>
+  <li><a href="/eco">Eco</a></li>
+  <li><a href="/no-frost">No Frost</a></li>
+  <li><a href="/off">Off</a></li>
+  <li><a href="/parking">Parking</a></li>
+  <br>
+  Current: <strong id='current'></strong>
+  Data: <strong id='data'></strong>
+  <canvas id="myChart" width="400" height="400"></canvas>
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="/js/Chart.js"></script>
+  <script>
+  	$.ajax({
+	  url: "/status",
+	}).done(function(data) {
+	  $("#current").text(data.text);
+	});
+	var ctx = $("#myChart").get(0).getContext("2d");
+	var data = {
+	    labels: ["January", "February", "March", "April", "May", "June", "July"],
+	    datasets: [
+	        {
+	            label: "My First dataset",
+	            fillColor: "rgba(220,220,220,0.2)",
+	            strokeColor: "rgba(220,220,220,1)",
+	            pointColor: "rgba(220,220,220,1)",
+	            pointStrokeColor: "#fff",
+	            pointHighlightFill: "#fff",
+	            pointHighlightStroke: "rgba(220,220,220,1)",
+	            data: [65, 59, 80, 81, 56, 55, 40]
+	        },
+	        {
+	            label: "My Second dataset",
+	            fillColor: "rgba(151,187,205,0.2)",
+	            strokeColor: "rgba(151,187,205,1)",
+	            pointColor: "rgba(151,187,205,1)",
+	            pointStrokeColor: "#fff",
+	            pointHighlightFill: "#fff",
+	            pointHighlightStroke: "rgba(151,187,205,1)",
+	            data: [28, 48, 40, 19, 86, 27, 90]
+	        }
+	    ]
+	};
+	var myNewChart = new Chart(ctx).Line(data, {
+	    bezierCurve: true
+	});
+
+
+	setInterval(function() { 
+	  	$.ajax({
+		  url: "/data",
+		}).done(function(data) {
+		  $("#data").text(data);
+		});
+	}, 5000);
+  </script>
+</body>
+</html>
