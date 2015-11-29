@@ -34,7 +34,7 @@ setInterval(function() {
     value: Math.random()
   }; 
   data.humidities.push(humidityItem);
-}, 1000);
+}, 1000*60*10);
 
 //TIME RULES
 rules.weekMornings = new schedule.RecurrenceRule();
