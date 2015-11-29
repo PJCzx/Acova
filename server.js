@@ -17,13 +17,23 @@ var myParkingSystem = new parking(GPIO_PARKING, false);
 var rules = {};
 var scheduledJobs = {};
 var data = {};
-//fake data
-data.temperature = {};
-data.humidity = {};
 
-setInterval(function() { 
-  data.temperature[new Date()] = 20 + 10 * Math.random();
-  data.humidity[new Date()] = Math.random();
+//fake data
+data.temperatures = [];
+data.humidities = [];
+
+setInterval(function() {
+  var temperatureItem = {
+    date: new Date(),
+    value: 20 + 10 * Math.random()
+  }; 
+  data.temperatures.push(temperatureItem);
+
+  var humidityItem = {
+    date: new Date(),
+    value: Math.random()
+  }; 
+  data.humidities.push(humidityItem);
 }, 1000);
 
 //TIME RULES
@@ -104,6 +114,10 @@ app.get('/status', function (req, res) {
   };
   res.send(resp);
 })
+.get('/log', function (req, res) {
+  var resp = myHeatingSystem.logfile;
+  res.send(resp);
+})
 .get('/comfort', function (req, res) {
   myHeatingSystem.setConfort();
   res.redirect('/');
@@ -136,8 +150,11 @@ app.get('/status', function (req, res) {
   scheduleJobs();
   res.redirect('/');
 })
-.get('/data', function (req, res) {
-  res.send(data);
+.get('/temperatures', function (req, res) {
+  res.send(data.temperatures);
+})
+.get('/humidities', function (req, res) {
+  res.send(data.humidities);
 });
 
 app.get('/parking', function (req, res) {
