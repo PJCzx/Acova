@@ -11,7 +11,7 @@ var GPIO_POS = 15;
 var GPIO_NEG = 16;
 var GPIO_PARKING = 7;
 
-var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG).init();
+var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG, false).init();
 var myParkingSystem = new parking(GPIO_PARKING, false);
 
 var rules = {};
@@ -61,36 +61,36 @@ rules.weekendMornings.callback = function() { myHeatingSystem.setEco(); };
 rules.weekendEvenings = new schedule.RecurrenceRule();
 rules.weekendEvenings.dayOfWeek = [0, 6]; //SUN, SAT
 rules.weekendEvenings.hour = 17;
-rules.weekendEvenings.minute = 30;
+rules.weekendEvenings.minute = 45;
 rules.weekendEvenings.duration = 1000*60*60*6; //6h
 rules.weekendEvenings.callback = function() { myHeatingSystem.setConfortMinusTwo(); };
 
 //TIME ACTIONS
 var scheduleJobs = function() { 
   scheduledJobs.wm = schedule.scheduleJob(rules.weekMornings, function() {
-      console.log(Date(), 'This is a Week Morning event');
+      myHeatingSystem.log('This is a Week Morning event');
       myHeatingSystem.setConfort();
       if(rules.weekMornings.duration !== undefined) setTimeout(rules.weekMornings.callback, rules.weekMornings.duration);
   });
  
   scheduledJobs.we = schedule.scheduleJob(rules.weekEvenings, function() {
-      console.log(Date(), 'This is a Week Evening event');
+      myHeatingSystem.log('This is a Week Evening event');
       myHeatingSystem.setConfort();
       if(rules.weekEvenings.duration !== undefined) setTimeout(rules.weekEvenings.callback, rules.weekEvenings.duration);
   });
  
   scheduledJobs.wem = schedule.scheduleJob(rules.weekendMornings, function() {
-      console.log(Date(), 'This is a Week-End Morning event');
+      myHeatingSystem.log('This is a Week-End Morning event');
       myHeatingSystem.setConfort();
       if(rules.weekendMornings.duration !== undefined) setTimeout(rules.weekendMornings.callback, rules.weekendMornings.duration);
   });
  
   scheduledJobs.wee = schedule.scheduleJob(rules.weekendEvenings, function() {
-      console.log(Date(), 'This is a Week-End Evening event');
+      myHeatingSystem.log('This is a Week-End Evening event');
       myHeatingSystem.setConfort();
       if(rules.weekendEvenings.duration !== undefined) setTimeout(rules.weekendEvenings.callback, rules.weekendEvenings.duration);
   });
-  console.log("Jobs SCHEDULED");  
+  myHeatingSystem.log("Global : Jobs SCHEDULED");  
 };
 scheduleJobs();
 
@@ -99,7 +99,7 @@ var cancelScheduledJobs = function () {
   scheduledJobs.we.cancel();
   scheduledJobs.wem.cancel();
   scheduledJobs.wee.cancel();
-  console.log("Jobs CANCELED");
+  myHeatingSystem.log("Global Jobs CANCELED");
 };
 
 //Static files
@@ -166,6 +166,6 @@ var server = app.listen(3001, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log('Example app listening at http://%s:%s', host, port);
+  myHeatingSystem.log('Global : app listening at http://%s:%s', host, port);
 });
 
