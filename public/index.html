@@ -1,66 +1,148 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
 <body>
-  <li><a href="/cancel">Cancel Jobs</a></li>
-  <li><a href="/schedule">Schedule Jobs</a></li>
-  <li><a href="/comfort">Confort</a></li>
-  <li><a href="/comfort-minus-one">-1</a></li>
-  <li><a href="/comfort-minus-two">-2</a></li>
-  <li><a href="/eco">Eco</a></li>
-  <li><a href="/no-frost">No Frost</a></li>
-  <li><a href="/off">Off</a></li>
-  <li><a href="/parking">Parking</a></li>
-  <br>
-  Current: <strong id='current'></strong>
-  Data: <strong id='data'></strong>
-  <canvas id="myChart" width="400" height="400"></canvas>
+	<div class="container"> 
+		<div class="row">
+			<h1>Heating <span id='current' class="label label-primary">Init</span></h1>
+			<li><a href="/cancel">Cancel Jobs</a></li>
+			<li><a href="/schedule">Schedule Jobs</a></li>
+			<li><a href="/comfort">Confort</a></li>
+			<li><a href="/comfort-minus-one">-1</a></li>
+			<li><a href="/comfort-minus-two">-2</a></li>
+			<li><a href="/eco">Eco</a></li>
+			<li><a href="/no-frost">No Frost</a></li>
+			<li><a href="/off">Off</a></li>
+			<li><a href="/parking">Parking</a></li>
+		</div>
+  		<div class="row">
+		  	<h2>Log</h2>
+			<table class="log table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Emitter</th>
+						<th>logline</th>
+					</tr>
+					<tbody></tbody>
+				</thead>
+			</table>
+		</div>
+  		<div class="row">
+			<h2>Temperature</h2>
+	  		<canvas id="temperature" width='800' height="400"></canvas>
+		  	<table class="temperatures table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Value</th>
+					</tr>
+					<tbody></tbody>
+				</thead>
+			</table>
+		</div>
+  		<div class="row">
+			<h2>Humidity</h2>
+	  		<canvas id="humidity" width="400" height="400"></canvas>
+		  	<table class="humidities table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Value</th>
+					</tr>
+					<tbody></tbody>
+				</thead>
+			</table>
+	  	</div>
+ 	</div>
+  	<script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+  	<script type="text/javascript" src="/js/bootstrap.js"></script>
+  	<script type="text/javascript" src="/js/Chart.js"></script>
 
-  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
-  <script type="text/javascript" src="/js/Chart.js"></script>
-  <script>
-  	$.ajax({
-	  url: "/status",
-	}).done(function(data) {
-	  $("#current").text(data.text);
-	});
-	var ctx = $("#myChart").get(0).getContext("2d");
-	var data = {
-	    labels: ["January", "February", "March", "April", "May", "June", "July"],
-	    datasets: [
-	        {
-	            label: "My First dataset",
-	            fillColor: "rgba(220,220,220,0.2)",
-	            strokeColor: "rgba(220,220,220,1)",
-	            pointColor: "rgba(220,220,220,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
-	            pointHighlightStroke: "rgba(220,220,220,1)",
-	            data: [65, 59, 80, 81, 56, 55, 40]
-	        },
-	        {
-	            label: "My Second dataset",
-	            fillColor: "rgba(151,187,205,0.2)",
-	            strokeColor: "rgba(151,187,205,1)",
-	            pointColor: "rgba(151,187,205,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
-	            pointHighlightStroke: "rgba(151,187,205,1)",
-	            data: [28, 48, 40, 19, 86, 27, 90]
-	        }
-	    ]
-	};
-	var myNewChart = new Chart(ctx).Line(data, {
-	    bezierCurve: true
-	});
+  	<script>
 
-
-	setInterval(function() { 
-	  	$.ajax({
-		  url: "/data",
-		}).done(function(data) {
-		  $("#data").text(data);
+		var data = {
+		    labels: ["January", "February", "March", "April", "May", "June", "July"],
+		    datasets: [
+		        {
+		            label: "My First dataset",
+		            fillColor: "rgba(220,220,220,0.2)",
+		            strokeColor: "rgba(220,220,220,1)",
+		            pointColor: "rgba(220,220,220,1)",
+		            pointStrokeColor: "#fff",
+		            pointHighlightFill: "#fff",
+		            pointHighlightStroke: "rgba(220,220,220,1)",
+		            data: [65, 59, 80, 81, 56, 55, 40]
+		        },
+		        {
+		            label: "My Second dataset",
+		            fillColor: "rgba(151,187,205,0.2)",
+		            strokeColor: "rgba(151,187,205,1)",
+		            pointColor: "rgba(151,187,205,1)",
+		            pointStrokeColor: "#fff",
+		            pointHighlightFill: "#fff",
+		            pointHighlightStroke: "rgba(151,187,205,1)",
+		            data: [28, 48, 40, 19, 86, 27, 90]
+		        }
+		    ]
+		};
+		var ctx = $("#temperature").get(0).getContext("2d");
+		var temperatureChart = new Chart(ctx).Line(data, {
+		    bezierCurve: true
 		});
-	}, 5000);
-  </script>
+
+		var ctx = $("#humidity").get(0).getContext("2d");
+		var humidityChart = new Chart(ctx).Line(data, {
+		    bezierCurve: true
+		});
+
+
+		setInterval(function() {
+
+			$.ajax({
+		  		url: "/status",
+			}).done(function(data) {
+		  		$("#current").text(data.text);
+			});
+
+		  	$.ajax({
+			  url: "/temperatures",
+			}).done(function(data) {
+			  var $tbody = $('.temperatures').children("tbody").empty();
+			  for (var row of data) {
+			  	var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.value + "</td></tr>";
+			  	$tbody.append(htmlrow);
+			  }
+			});
+
+
+			$.ajax({
+			  url: "/humidities",
+			}).done(function(data) {
+			  var $tbody = $('.humidities').children("tbody").empty();
+			  for (var row of data) {
+			  	var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.value + "</td></tr>";
+			  	$tbody.append(htmlrow);
+			  }
+			});
+
+			$.ajax({
+			  url: "/log",
+			}).done(function(data) {
+			  var $tbody = $('.log').children("tbody").empty();
+			  for (var row of data) {
+			  	var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.name + "</td><td>" + row.logline + "</td></tr>";
+			  	$tbody.append(htmlrow);
+			  }
+
+			//temperatureChart.removeData();
+			//temperatureChart.addData([40, 60], new Date().getHours() + ":" + new Date().getMinutes());
+
+			});
+
+		}, 5000);
+	</script>
 </body>
 </html>
