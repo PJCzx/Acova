@@ -1,3 +1,18 @@
+/*var datachartist = {
+  // A labels array that can contain any sort of values
+  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+  // Our series array that contains series objects or in this case series data arrays
+  series: [
+    [5]
+  ]
+};*/
+
+// Create a new line chart object where as first parameter we pass in a selector
+// that is resolving to our chart container element. The Second parameter
+// is the actual data object.
+//var chartistGraph = new Chartist.Line('.ct-chart', datachartist);
+
+/*
 var data = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
@@ -23,8 +38,26 @@ var data = {
         }
     ]
 };
+
+
+var temperatures = {
+    labels: ["Init"],
+    datasets: [
+        {
+            label: "Temperatures",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [19]
+        }
+    ]
+};
+
 var ctx = $("#temperature").get(0).getContext("2d");
-var temperatureChart = new Chart(ctx).Line(data, {
+var temperatureChart = new Chart(ctx).Line(temperatures, {
     bezierCurve: true
 });
 
@@ -33,6 +66,20 @@ var humidityChart = new Chart(ctx).Line(data, {
     bezierCurve: true
 });
 
+
+$.ajax({
+	url: "/temperatures",
+}).success(function(data) {
+	for (var row of data) {
+		temperatures.labels.push(row.date);
+
+		//temperatures.datasets[0].data.push(row.value);
+		datachartist.series[0].push(row.value);
+	}
+	//temperatureChart.update();
+
+});
+*/
 
 setInterval(function() {
 
@@ -43,13 +90,18 @@ setInterval(function() {
 	});
 
   	$.ajax({
-	  url: "/temperatures",
-	}).done(function(data) {
-	  var $tbody = $('.temperatures').children("tbody").empty();
-	  for (var row of data) {
-	  	var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.value + "</td></tr>";
-	  	$tbody.append(htmlrow);
-	  }
+		url: "/temperatures",
+	}).success(function(data) {
+	  	var $tbody = $('.temperatures').children("tbody").empty();
+	  	//datachartist.series[0] = [];
+	  	//datachartist.labels = [];
+	  	for (var row of data) {
+	  		var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.value + "</td></tr>";
+	  		$tbody.append(htmlrow);
+			//datachartist.labels.push(row.date);
+			//datachartist.series[0].push(row.value);
+		}
+		//chartistGraph.update();
 	});
 
 
@@ -71,10 +123,6 @@ setInterval(function() {
 	  	var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.name + "</td><td>" + row.logline + "</td></tr>";
 	  	$tbody.append(htmlrow);
 	  }
-
-	//temperatureChart.removeData();
-	//temperatureChart.addData([40, 60], new Date().getHours() + ":" + new Date().getMinutes());
-
 	});
 
 }, 5000);
