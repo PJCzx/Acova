@@ -97,7 +97,7 @@ setInterval(function() {
 	  	//datachartist.labels = [];
 	  	for (var row of data) {
 	  		var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.value + "</td></tr>";
-	  		$tbody.append(htmlrow);
+	  		$tbody.prepend(htmlrow);
 			//datachartist.labels.push(row.date);
 			//datachartist.series[0].push(row.value);
 		}
@@ -111,7 +111,7 @@ setInterval(function() {
 	  var $tbody = $('.humidities').children("tbody").empty();
 	  for (var row of data) {
 	  	var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.value + "</td></tr>";
-	  	$tbody.append(htmlrow);
+	  	$tbody.prepend(htmlrow);
 	  }
 	});
 
@@ -121,7 +121,7 @@ setInterval(function() {
 	  var $tbody = $('.log').children("tbody").empty();
 	  for (var row of data) {
 	  	var htmlrow = "<tr><th>" + row.date + "</th><td>" + row.name + "</td><td>" + row.logline + "</td></tr>";
-	  	$tbody.append(htmlrow);
+	  	$tbody.prepend(htmlrow);
 	  }
 	});
 
