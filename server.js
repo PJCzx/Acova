@@ -61,7 +61,7 @@ rules.weekendMornings.callback = function() { myHeatingSystem.setEco(); };
 rules.weekendEvenings = new schedule.RecurrenceRule();
 rules.weekendEvenings.dayOfWeek = [0, 6]; //SUN, SAT
 rules.weekendEvenings.hour = 17;
-rules.weekendEvenings.minute = 45;
+rules.weekendEvenings.minute = 30;
 rules.weekendEvenings.duration = 1000*60*60*6; //6h
 rules.weekendEvenings.callback = function() { myHeatingSystem.setConfortMinusTwo(); };
 
