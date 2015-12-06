@@ -166,6 +166,6 @@ var server = app.listen(3001, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  myHeatingSystem.log('Global : app listening at http://%s:%s', host, port);
+  myHeatingSystem.log('Global : app listening at', host, port);
 });
 
