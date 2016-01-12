@@ -24,7 +24,7 @@ data.temperatures = [];
 data.humidities = [];
 
 var addTempAndHumid = function() {
-    var child = exec("~/Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
+    var child = exec("\/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
         //Stdout=stdout;
         var temperatureItem = {
             date: new Date(),
