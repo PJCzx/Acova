@@ -43,7 +43,7 @@ var addTempAndHumid = function() {
 };
 
 addTempAndHumid();
-setInterval(addTempAndHumid(), 1000*60*10);
+//setInterval(addTempAndHumid(), 1000*60*10);
 
 //TIME RULES
 rules.weekMornings = new schedule.RecurrenceRule();
@@ -129,10 +129,6 @@ app.get('/status', function (req, res) {
   };
   res.send(resp);
 })
-//.get('/temperatures', function (req, res) {
-//  var resp = data.temperatures[data.temperatures.length-1];
-//  res.send(resp);
-//})
 .get('/log', function (req, res) {
   var resp = myHeatingSystem.logfile;
   res.send(resp);
