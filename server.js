@@ -34,16 +34,16 @@ var addTempAndHumid = function() {
         
         console.log("added", Stdout, "to temperatures");
         
-        var humidityItem = {
-            date: new Date(),
-            value: stdout
-        }; 
-        data.humidities.push(humidityItem);
+        //var humidityItem = {
+        //    date: new Date(),
+        //    value: stdout
+        //}; 
+        //data.humidities.push(humidityItem);
     });
 };
 
 addTempAndHumid();
-setInterval(addTempAndHumid, 1000*60*10);
+//setInterval(addTempAndHumid, 1000*60*10);
 
 //TIME RULES
 rules.weekMornings = new schedule.RecurrenceRule();
