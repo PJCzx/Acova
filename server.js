@@ -1,6 +1,8 @@
 var express = require('express');
 var schedule = require('node-schedule');
 
+var sys=require("sys");
+var exec=require("child_process").exec;
 
 var acova = require('./lib/acova.js');
 var parking = require('./lib/parking.js');
@@ -18,23 +20,28 @@ var rules = {};
 var scheduledJobs = {};
 var data = {};
 
-//fake data
 data.temperatures = [];
 data.humidities = [];
 
-setInterval(function() {
-  var temperatureItem = {
-    date: new Date(),
-    value: 20 + 10 * Math.random()
-  }; 
-  data.temperatures.push(temperatureItem);
+var addTempAndHumid = function() {
+    var child = exec("Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
+        Stdout=stdout;
+        var temperatureItem = {
+            date: new Date(),
+            value: stdout
+        };
+        data.temperatures.push(temperatureItem);   
+        
+        var humidityItem = {
+            date: new Date(),
+            value: Math.random()
+        }; 
+        data.humidities.push(humidityItem);
+    });
+};
 
-  var humidityItem = {
-    date: new Date(),
-    value: Math.random()
-  }; 
-  data.humidities.push(humidityItem);
-}, 1000*60*10);
+addTempAndHumid();
+setInterval(addTempAndHumid, 1000*60*10);
 
 //TIME RULES
 rules.weekMornings = new schedule.RecurrenceRule();
@@ -111,6 +118,12 @@ app.get('/status', function (req, res) {
   var resp = {
     text: myHeatingSystem.getCurrentStateToString(),
     value: myHeatingSystem.getCurrentState()
+  };
+  res.send(resp);
+})
+.get('/temperature', function (req, res) {
+  var resp = {
+    text: data.temperatures[data.temperatures.length],
   };
   res.send(resp);
 })
