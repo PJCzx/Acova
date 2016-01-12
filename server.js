@@ -32,7 +32,7 @@ var addTempAndHumid = function() {
         };
         data.temperatures.push(temperatureItem);   
         
-        console.log("added", Stdout, "to temperatures", data.temperatures[data.temperatures.length-1]);
+        console.log("added", Stdout, "to temperatures");
         
         //var humidityItem = {
         //    date: new Date(),
