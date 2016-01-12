@@ -43,7 +43,7 @@ var addTempAndHumid = function() {
 };
 
 addTempAndHumid();
-//setInterval(addTempAndHumid, 1000*60*10);
+setInterval(addTempAndHumid(), 1000*60*10);
 
 //TIME RULES
 rules.weekMornings = new schedule.RecurrenceRule();
