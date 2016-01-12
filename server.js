@@ -22,17 +22,17 @@ var data = {};
 
 data.temperatures = [];
 data.humidities = [];
-
+var Stdout;
 var addTempAndHumid = function() {
     var child = exec("\/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
-        //Stdout=stdout;
+        Stdout=stdout;
         var temperatureItem = {
             date: new Date(),
             value: stdout
         };
         data.temperatures.push(temperatureItem);   
         
-        console.log("added", stdout, "to temperatures", error, stderr);
+        console.log("added", Stdout, "to temperatures");
         
         var humidityItem = {
             date: new Date(),
@@ -124,7 +124,9 @@ app.get('/status', function (req, res) {
   res.send(resp);
 })
 .get('/temperature', function (req, res) {
-  var resp = data.temperatures[data.temperatures.length];
+  var resp = {
+      text: Stdout
+  };
   res.send(resp);
 })
 .get('/log', function (req, res) {
