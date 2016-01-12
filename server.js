@@ -34,11 +34,11 @@ var addTempAndHumid = function() {
         
         console.log("added", Stdout, "to temperatures", data.temperatures[data.temperatures.length-1]);
         
-        var humidityItem = {
-            date: new Date(),
-            value: stdout
-        }; 
-        data.humidities.push(humidityItem);
+        //var humidityItem = {
+        //    date: new Date(),
+        //    value: stdout
+        //}; 
+        //data.humidities.push(humidityItem);
     });
 };
 
@@ -127,6 +127,10 @@ app.get('/status', function (req, res) {
   var resp = {
       last: Stdout
   };
+  res.send(resp);
+})
+.get('/temperatures', function (req, res) {
+  var resp = data.temperatures[data.temperatures.length-1];
   res.send(resp);
 })
 .get('/log', function (req, res) {
