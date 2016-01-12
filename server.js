@@ -126,7 +126,7 @@ app.get('/status', function (req, res) {
 .get('/temperature', function (req, res) {
   var resp = {
       last: Stdout,
-      other: data.temperatures[data.temperatures.length];
+      other: data.temperatures[data.temperatures.length]
   };
   res.send(resp);
 })
