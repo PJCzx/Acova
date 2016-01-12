@@ -124,9 +124,7 @@ app.get('/status', function (req, res) {
   res.send(resp);
 })
 .get('/temperature', function (req, res) {
-  var resp = {
-    text: data.temperatures[data.temperatures.length],
-  };
+  var resp = data.temperatures[data.temperatures.length];
   res.send(resp);
 })
 .get('/log', function (req, res) {
