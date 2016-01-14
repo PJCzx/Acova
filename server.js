@@ -137,6 +137,8 @@ app.get('/status', function (req, res) {
     temperature: data.temperatures && data.temperatures.length > 0 ? data.temperatures[data.temperatures.length - 1].value : 0,
     humidity: data.temperatures && data.temperatures.length > 0 ? data.humidities[data.humidities.length - 1].value : 0
   };
+    console.log(data, data.temperatures, data.temperatures.length)
+  console.log(resp);
   res.send(resp);
 })
 .get('/temperature', function (req, res) {
