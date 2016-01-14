@@ -136,12 +136,18 @@ app.use('/', express.static('public'));
 app.get('/status', function (req, res) {
   var resp = {
     text: myHeatingSystem.getCurrentStateToString(),
-    value: myHeatingSystem.getCurrentState()
+    value: myHeatingSystem.getCurrentState(),
+    temperature: data.temperatures[data.temperatures.length - 1],
+    humidity: data.humidities[data.humidities.length - 1]
   };
   res.send(resp);
 })
 .get('/temperature', function (req, res) {
   var resp = data.temperatures[data.temperatures.length - 1];
+  res.send(resp);
+})
+.get('/humidity', function (req, res) {
+  var resp = data.humidities[data.humidities.length - 1];
   res.send(resp);
 })
 .get('/log', function (req, res) {
@@ -150,35 +156,35 @@ app.get('/status', function (req, res) {
 })
 .get('/comfort', function (req, res) {
   myHeatingSystem.setConfort();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/comfort-minus-one', function (req, res) {
   myHeatingSystem.setConfortMinusOne();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/comfort-minus-two', function (req, res) {
   myHeatingSystem.setConfortMinusTwo();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/eco', function (req, res) {
   myHeatingSystem.setEco();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/no-frost', function (req, res) {
   myHeatingSystem.setNoFrost();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/off', function (req, res) {
   myHeatingSystem.setOff();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/cancel', function (req, res) {
   cancelScheduledJobs();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/schedule', function (req, res) {
   scheduleJobs();
-  res.redirect('/');
+  res.sendStatus(200);
 })
 .get('/temperatures', function (req, res) {
   res.send(data.temperatures);
@@ -189,7 +195,7 @@ app.get('/status', function (req, res) {
 
 app.get('/parking', function (req, res) {
   //myParkingSystem.open();
-  res.redirect('/');
+  res.sendStatus(200);
 });
 
 var server = app.listen(3001, function () {
