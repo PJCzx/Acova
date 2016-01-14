@@ -11,9 +11,6 @@ var data = {};
 data.temperatures = [];
 data.humidities = [];
 
-data.temperatures[0] = 0;
-data.humidities[0] = 0;
-
 var sensor = {
     initialize: function () {
         return sensorLib.initialize(22, 4);
@@ -137,8 +134,8 @@ app.get('/status', function (req, res) {
   var resp = {
     state: myHeatingSystem.getCurrentStateToString(),
     stateCode: myHeatingSystem.getCurrentState(),
-    temperature: 1,
-    humidity: 2
+    temperature: data.temperatures && data.temperatures.length > 0 ? data.temperatures[data.temperatures.length - 1].value : 0,
+    humidity: data.temperatures && data.temperatures.length > 0 ? data.humidities[data.humidities.length - 1].value : 0
   };
   res.send(resp);
 })
