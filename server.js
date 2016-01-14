@@ -136,9 +136,7 @@ app.use('/', express.static('public'));
 app.get('/status', function (req, res) {
   var resp = {
     text: myHeatingSystem.getCurrentStateToString(),
-    value: myHeatingSystem.getCurrentState(),
-    temperature: data.temperatures[data.temperatures.length - 1],
-    humidity: data.humidities[data.humidities.length - 1]
+    value: myHeatingSystem.getCurrentState()
   };
   res.send(resp);
 })
