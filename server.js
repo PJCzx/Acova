@@ -137,8 +137,8 @@ app.get('/status', function (req, res) {
   var resp = {
     text: myHeatingSystem.getCurrentStateToString(),
     value: myHeatingSystem.getCurrentState(),
-    temperature: data.temperatures.length > 0 ? data.temperatures[data.temperatures.length - 1] : "-",
-    humidity: data.humidities.length > 0 ? data.humidities[data.humidities.length - 1] : "-"
+    temperature: 1,
+    humidity: 2
   };
   res.send(resp);
 })
