@@ -36,7 +36,7 @@ var sensor = {
         
         setTimeout(function () {
             sensor.read();
-        }, 1000*60*30);
+        }, 1000*60*1);
     }
 };
 
