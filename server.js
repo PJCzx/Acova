@@ -11,6 +11,8 @@ var data = {};
 data.temperatures = [];
 data.humidities = [];
 
+data.temperatures[0] = 0;
+data.humidities[0] = 0;
 var sensor = {
     initialize: function () {
         return sensorLib.initialize(22, 4);
@@ -21,13 +23,13 @@ var sensor = {
         
         var temperatureItem = {
             date: new Date(),
-            value: readout.temperature
+            value: readout.temperature.toFixed(2)
         };
         data.temperatures.push(temperatureItem);   
                 
         var humidityItem = {
             date: new Date(),
-            value: readout.humidity
+            value: readout.humidity.toFixed(2)
         }; 
         data.humidities.push(humidityItem);
         
@@ -57,26 +59,7 @@ var myParkingSystem = new parking(GPIO_PARKING, false);
 
 var rules = {};
 var scheduledJobs = {};
-
-var Stdout;
-var addTempAndHumid = function() {
-    var child = exec("\/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
-        var temperatureItem = {
-            date: new Date(),
-            value: stdout
-        };
-        data.temperatures.push(temperatureItem);   
-                
-        var humidityItem = {
-            date: new Date(),
-            value: stdout
-        }; 
-        data.humidities.push(humidityItem);
-    });
-};
-
-addTempAndHumid();
-//setInterval(addTempAndHumid(), 1000*60*10);
+var scheduledJobs = {};
 
 //TIME RULES
 rules.weekMornings = new schedule.RecurrenceRule();
