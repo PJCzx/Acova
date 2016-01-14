@@ -6,14 +6,22 @@ var exec=require("child_process").exec;
 
 var sensorLib = require('node-dht-sensor');
 
+var data = {};
+
+data.temperatures = [];
+data.humidities = [];
+
 var sensor = {
     initialize: function () {
         return sensorLib.initialize(22, 4);
     },
     read: function () {
         var readout = sensorLib.read();
-        console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' +
-            'humidity: ' + readout.humidity.toFixed(2) + '%');
+        console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' +'humidity: ' + readout.humidity.toFixed(2) + '%');
+        
+        data.temperatures.push(readout.temperature);
+        data.humidities.push(readout.humidity);
+        
         setTimeout(function () {
             sensor.read();
         }, 2000);
@@ -40,10 +48,7 @@ var myParkingSystem = new parking(GPIO_PARKING, false);
 
 var rules = {};
 var scheduledJobs = {};
-var data = {};
 
-data.temperatures = [];
-data.humidities = [];
 var Stdout;
 var addTempAndHumid = function() {
     var child = exec("\/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
