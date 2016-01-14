@@ -135,8 +135,8 @@ app.use('/', express.static('public'));
 //ROUTING
 app.get('/status', function (req, res) {
   var resp = {
-    text: myHeatingSystem.getCurrentStateToString(),
-    value: myHeatingSystem.getCurrentState(),
+    state: myHeatingSystem.getCurrentStateToString(),
+    stateCode: myHeatingSystem.getCurrentState(),
     temperature: 1,
     humidity: 2
   };

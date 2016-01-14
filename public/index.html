@@ -6,7 +6,15 @@
 <body>
 	<div class="container"> 
 		<div class="row">
-			<h1>Heating <span id='current' class="label label-primary">Init</span></h1>
+			<h1>Heating </h1>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span id='status-state'></span>
+                    <span id='status-temperature'></span>
+                    <span id='status-humidity'></span>
+                </div>
+            </div>
+            
 			<li><a href="/cancel">Cancel Jobs</a></li>
 			<li><a href="/schedule">Schedule Jobs</a></li>
 			<li><a href="/comfort">Confort</a></li>

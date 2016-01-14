@@ -86,7 +86,9 @@ setInterval(function() {
 	$.ajax({
   		url: "/status",
 	}).done(function(data) {
-  		$("#current").text(data.text);
+  		$("#status-state").text(data.state);
+        $("#status-temperature").text(data.temperature);
+        $("#status-humidity").text(data.humidity);
 	});
 
   	$.ajax({
