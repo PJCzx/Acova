@@ -16,7 +16,7 @@ var sensor = {
             'humidity: ' + readout.humidity.toFixed(2) + '%');
         setTimeout(function () {
             sensor.read();
-        }, 2000);
+        }, 1000*60*60);
     }
 };
 
