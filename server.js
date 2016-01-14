@@ -19,8 +19,17 @@ var sensor = {
         var readout = sensorLib.read();
         console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' +'humidity: ' + readout.humidity.toFixed(2) + '%');
         
-        data.temperatures.push(readout.temperature);
-        data.humidities.push(readout.humidity);
+        var temperatureItem = {
+            date: new Date(),
+            value: readout.temperature
+        };
+        data.temperatures.push(temperatureItem);   
+                
+        var humidityItem = {
+            date: new Date(),
+            value: readout.humidity
+        }; 
+        data.humidities.push(humidityItem);
         
         setTimeout(function () {
             sensor.read();
