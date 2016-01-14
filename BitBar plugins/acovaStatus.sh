@@ -7,8 +7,9 @@ var url = 'http://.../status';
 http.get(url, function(res) {
   res.on('data', function (chunk) {
   	var json = JSON.parse(chunk);
-    console.log(json.text);
-  });
+    console.log(json.state);
+    console.log(json.temperature + "°C");
+    console.log(json.humidity + "%");  });
 }).on('error', function(e) {
   console.log(`Got error: ${e.message}`);
 });
