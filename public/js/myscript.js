@@ -90,7 +90,7 @@ setInterval(function() {
         $("#status-temperature").text(data.temperature);
         $("#status-humidity").text(data.humidity);
 	});
-
+/*
   	$.ajax({
 		url: "/temperatures",
 	}).success(function(data) {
@@ -116,7 +116,7 @@ setInterval(function() {
 	  	$tbody.prepend(htmlrow);
 	  }
 	});
-
+*/
 	$.ajax({
 	  url: "/log",
 	}).done(function(data) {
