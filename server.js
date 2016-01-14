@@ -23,7 +23,7 @@ var data = {};
 data.temperatures = [];
 data.humidities = [];
 
-var addTempAndHumid = function(resp) {
+var addTempAndHumid = function(res) {
     var child = exec("\/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
         var temperatureItem = {
             date: new Date(),
@@ -122,7 +122,7 @@ app.get('/status', function (req, res) {
   res.send(resp);
 })
 .get('/temperature', function (req, res) {
-  addTempAndHumid(resp);
+  addTempAndHumid(res);
 })
 .get('/log', function (req, res) {
   var resp = myHeatingSystem.logfile;
