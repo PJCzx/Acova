@@ -22,25 +22,24 @@ var data = {};
 
 data.temperatures = [];
 data.humidities = [];
-
-var addTempAndHumid = function(res) {
+var Stdout;
+var addTempAndHumid = function() {
     var child = exec("\/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 2302 4", function(error, stdout, stderr) {
         var temperatureItem = {
             date: new Date(),
             value: stdout
         };
-        res.send(temperatureItem);
-        //data.temperatures.push(temperatureItem);   
+        data.temperatures.push(temperatureItem);   
                 
-        //var humidityItem = {
-        //    date: new Date(),
-        //    value: stdout
-        //}; 
-        //data.humidities.push(humidityItem);
+        var humidityItem = {
+            date: new Date(),
+            value: stdout
+        }; 
+        data.humidities.push(humidityItem);
     });
 };
 
-//addTempAndHumid();
+addTempAndHumid();
 //setInterval(addTempAndHumid(), 1000*60*10);
 
 //TIME RULES
@@ -122,7 +121,8 @@ app.get('/status', function (req, res) {
   res.send(resp);
 })
 .get('/temperature', function (req, res) {
-  addTempAndHumid(res);
+  var resp = data.temperatures[data.temperatures.length - 1];
+  res.send(resp);
 })
 .get('/log', function (req, res) {
   var resp = myHeatingSystem.logfile;
