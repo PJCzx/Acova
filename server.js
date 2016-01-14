@@ -11,8 +11,8 @@ var data = {};
 data.temperatures = [];
 data.humidities = [];
 
-//data.temperatures[0] = 0;
-//data.humidities[0] = 0;
+data.temperatures[0] = 0;
+data.humidities[0] = 0;
 
 var sensor = {
     initialize: function () {
@@ -36,7 +36,7 @@ var sensor = {
         
         setTimeout(function () {
             sensor.read();
-        }, 1000*60*1);
+        }, 2000);
     }
 };
 
@@ -136,7 +136,9 @@ app.use('/', express.static('public'));
 app.get('/status', function (req, res) {
   var resp = {
     text: myHeatingSystem.getCurrentStateToString(),
-    value: myHeatingSystem.getCurrentState()
+    value: myHeatingSystem.getCurrentState(),
+    temperature: data.temperatures.length > 0 ? data.temperatures[data.temperatures.length - 1] : "-",
+    humidity: data.humidities.length > 0 ? data.humidities[data.humidities.length - 1] : "-"
   };
   res.send(resp);
 })
