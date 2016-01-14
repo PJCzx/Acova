@@ -11,8 +11,9 @@ var data = {};
 data.temperatures = [];
 data.humidities = [];
 
-data.temperatures[0] = 0;
-data.humidities[0] = 0;
+//data.temperatures[0] = 0;
+//data.humidities[0] = 0;
+
 var sensor = {
     initialize: function () {
         return sensorLib.initialize(22, 4);
