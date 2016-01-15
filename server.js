@@ -42,7 +42,7 @@ var sensor = {
         
         setTimeout(function () {
             sensor.read();
-        }, 1000*2);//60*10);
+        }, 1000*60*10);
     }
 };
 
