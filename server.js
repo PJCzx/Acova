@@ -11,6 +11,8 @@ var data = {};
 data.temperatures = [];
 data.humidities = [];
 
+var sensorData = [];
+
 var sensor = {
     initialize: function () {
         return sensorLib.initialize(22, 4);
@@ -31,9 +33,16 @@ var sensor = {
         }; 
         data.humidities.push(humidityItem);
         
+        var dataItem = {
+            date: new Date(),
+            temperature: readout.temperature.toFixed(2),
+            humidity: readout.humidity.toFixed(2)
+        }; 
+        sensorData.push(dataItem);
+        
         setTimeout(function () {
             sensor.read();
-        }, 1000*60*10);
+        }, 1000*2);//60*10);
     }
 };
 
@@ -188,6 +197,9 @@ app.get('/status', function (req, res) {
 })
 .get('/humidities', function (req, res) {
   res.send(data.humidities);
+})
+.get('/sensordata', function (req, res) {
+  res.send(sensorData);
 });
 
 app.get('/parking', function (req, res) {
