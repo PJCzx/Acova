@@ -1,5 +1,5 @@
 $.ajax({
-	url: "http://home.pierrejuliencazaux.com/sensordata",
+	url: "/sensordata",
 }).success(function(receivedData) {
     var builtdata = {
         labels: [],
