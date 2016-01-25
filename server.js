@@ -50,7 +50,7 @@ var sensor = {
         }; 
         sensorData.push(dataItem);
 
-        fs.writeFile("tmp/sensordata", sensordata, function(err) {
+        fs.writeFile("tmp/sensordata", sensorData, function(err) {
           if(err) {
               return console.log(err);
           } else {
