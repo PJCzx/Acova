@@ -1,5 +1,6 @@
 var express = require('express');
 var schedule = require('node-schedule');
+var fs = require('fs');
 
 var sys=require("sys");
 var exec=require("child_process").exec;
@@ -12,6 +13,15 @@ data.temperatures = [];
 data.humidities = [];
 
 var sensorData = [];
+
+fs.readFile('tmp/sensordata','utf8', (err, data) => {
+  if (err) {
+    throw err;
+  } else {
+    sensorData = data;
+    console.log("sensorData loaded");
+  }
+});
 
 var sensor = {
     initialize: function () {
@@ -39,6 +49,14 @@ var sensor = {
             humidity: readout.humidity.toFixed(2)
         }; 
         sensorData.push(dataItem);
+
+        fs.writeFile("tmp/sensordata", sensordata, function(err) {
+          if(err) {
+              return console.log(err);
+          } else {
+            console.log("Sensor Data file was saved!");
+          }
+        }); 
         
         setTimeout(function () {
             sensor.read();
