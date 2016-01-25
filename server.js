@@ -14,7 +14,7 @@ data.humidities = [];
 
 var sensorData = [];
 
-fs.readFile('tmp/sensordata','utf8', (err, data) => {
+fs.readFile('tmp/sensordata','utf8', function(err, data) {
   if (err) {
     throw err;
   } else {
