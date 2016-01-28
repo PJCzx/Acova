@@ -16,7 +16,7 @@ var sensorData = [];
 
 fs.readFile('tmp/sensordata','utf8', function(err, data) {
   if (err) {
-    console.log(err);
+    console.log("File error, probably not existing.");
   } else {
     sensorData = JSON.parse(data);
     console.log("sensorData loaded", sensorData);
@@ -61,7 +61,7 @@ var sensor = {
         
         setTimeout(function () {
             sensor.read();
-        }, 1000);//*60*10
+        }, 1000*60*10);
     }
 };
 
