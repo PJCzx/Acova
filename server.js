@@ -13,17 +13,16 @@ data.temperatures = [];
 data.humidities = [];
 
 var sensorData = [];
-/*
+
 fs.readFile('tmp/sensordata','utf8', function(err, data) {
   if (err) {
-    throw err;
+    console.log(err);
   } else {
-    sensorData = data;
+    sensorData = JSON.parse(data);
     console.log("sensorData loaded", sensorData);
   }
 });
-*/
-sensorData = JSON.parse(fs.readFileSync('tmp/sensordata'));
+
 
 var sensor = {
     initialize: function () {
