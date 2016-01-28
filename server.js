@@ -23,8 +23,7 @@ fs.readFile('tmp/sensordata','utf8', function(err, data) {
   }
 });
 */
-sensorData = JSON.parse(fs.readFileSync('tmp/sensordata'));;
-if(!sensorData) sensorData = [];
+sensorData = JSON.parse(fs.readFileSync('tmp/sensordata'));
 
 var sensor = {
     initialize: function () {
@@ -53,7 +52,7 @@ var sensor = {
         }; 
         sensorData.push(dataItem);
 
-        fs.writeFile("tmp/sensordata", sensorData, function(err) {
+        fs.writeFile("tmp/sensordata", JSON.stringify(sensorData), function(err) {
           if(err) {
               return console.log(err);
           } else {
