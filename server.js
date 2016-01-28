@@ -19,9 +19,12 @@ fs.readFile('tmp/sensordata','utf8', function(err, data) {
     throw err;
   } else {
     sensorData = data;
-    console.log("sensorData loaded");
+    console.log("sensorData loaded", sensorData);
   }
 });
+
+sensorData = fs.readFileSync('tmp/sensordata');
+if(!sensorData) sensorData = [];
 
 var sensor = {
     initialize: function () {
