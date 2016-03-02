@@ -1,7 +1,7 @@
 $.ajax({
 	url: "/sensordata",
 }).success(function(receivedData) {
-    var builtdata = {
+    var builtdataTemp = {
         labels: [],
         datasets: [
             {
@@ -13,7 +13,13 @@ $.ajax({
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
                 data: []
-            },
+            }
+        ]
+    };
+
+        var builtdataHumid = {
+        labels: [],
+        datasets: [
             {
                 label: "Humidities",
                 fillColor: "rgba(0,220,220,0.0)",
@@ -28,18 +34,25 @@ $.ajax({
     };
 
     for (var i = 0; i < receivedData.length; i++) {
-        builtdata.datasets[0].data.push(receivedData[i].temperature);
-        builtdata.datasets[1].data.push(receivedData[i].humidity);
+        builtdataTemp.datasets[0].data.push(receivedData[i].temperature);
+        builtdataHumid.datasets[0].data.push(receivedData[i].humidity);
         if(i%6 == 0) {
             var date = new Date(receivedData[i].date);
-            builtdata.labels.push(date.getHours());
+            builtdataTemp.labels.push(date.getHours());
+            builtdataHumid.labels.push(date.getHours());
         } else {
-            builtdata.labels.push(" ");
+            builtdataTemp.labels.push(" ");
+            builtdataHumid.labels.push(" ");
         }
     }
 
-    var ctx = $("#chart").get(0).getContext("2d");
-    var temperatureChart = new Chart(ctx).Line(builtdata, {
+    var ctx = $("#chart-temperature").get(0).getContext("2d");
+    var temperatureChart = new Chart(ctx).Line(builtdataTemp, {
+        bezierCurve: true
+    });
+
+    var ctx = $("#chart-humidity").get(0).getContext("2d");
+    var humidityChart = new Chart(ctx).Line(builtdataHumid, {
         bezierCurve: true
     });
 
