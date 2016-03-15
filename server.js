@@ -17,59 +17,63 @@ var sensorData = [];
 fs.readFile('tmp/sensordata.json','utf8', function(err, data, sensorData) {
   if (err) {
     console.log("File error, probably not existing.");
+    startSensor();
   } else {
     sensorData = JSON.parse(data);
     console.log("sensorData loaded", sensorData);
+    startSensor();
   }
 });
 
+var sensor;
+var startSensor = function() {
+  sensor = {
+      initialize: function () {
+          return sensorLib.initialize(22, 4);
+      },
+      read: function () {
+          var readout = sensorLib.read();
+          //console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' +'humidity: ' + readout.humidity.toFixed(2) + '%');
+          
+          var temperatureItem = {
+              date: new Date(),
+              value: readout.temperature.toFixed(2)
+          };
+          data.temperatures.push(temperatureItem);   
+                  
+          var humidityItem = {
+              date: new Date(),
+              value: readout.humidity.toFixed(2)
+          }; 
+          data.humidities.push(humidityItem);
+          
+          var dataItem = {
+              date: new Date(),
+              temperature: readout.temperature.toFixed(2),
+              humidity: readout.humidity.toFixed(2)
+          }; 
+          sensorData.push(dataItem);
 
-var sensor = {
-    initialize: function () {
-        return sensorLib.initialize(22, 4);
-    },
-    read: function () {
-        var readout = sensorLib.read();
-        //console.log('Temperature: ' + readout.temperature.toFixed(2) + 'C, ' +'humidity: ' + readout.humidity.toFixed(2) + '%');
-        
-        var temperatureItem = {
-            date: new Date(),
-            value: readout.temperature.toFixed(2)
-        };
-        data.temperatures.push(temperatureItem);   
-                
-        var humidityItem = {
-            date: new Date(),
-            value: readout.humidity.toFixed(2)
-        }; 
-        data.humidities.push(humidityItem);
-        
-        var dataItem = {
-            date: new Date(),
-            temperature: readout.temperature.toFixed(2),
-            humidity: readout.humidity.toFixed(2)
-        }; 
-        sensorData.push(dataItem);
-
-        fs.writeFile("tmp/sensordata.json", JSON.stringify(sensorData), function(err) {
-          if(err) {
-              return console.log(err);
-          } else {
-            console.log("Sensor Data file was saved!");
-          }
-        }); 
-        
-        setTimeout(function () {
-            sensor.read();
-        }, 1000*60*10);
-    }
-};
-
-if (sensor.initialize()) {
+          fs.writeFile("tmp/sensordata.json", JSON.stringify(sensorData), function(err) {
+            if(err) {
+                return console.log(err);
+            } else {
+              console.log("Sensor Data file was saved!");
+            }
+          }); 
+          
+          setTimeout(function () {
+              sensor.read();
+          }, 1000*60*10);
+      }
+  };
+  if (sensor.initialize()) {
     sensor.read();
 } else {
     console.warn('Failed to initialize sensor');
 }
+};
+
 
 var acova = require('./lib/acova.js');
 var parking = require('./lib/parking.js');
