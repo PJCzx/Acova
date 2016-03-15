@@ -14,7 +14,7 @@ data.humidities = [];
 
 var sensorData = [];
 
-fs.readFile('tmp/sensordata','utf8', function(err, data) {
+fs.readFile('tmp/sensordata.json','utf8', function(err, data, sensorData) {
   if (err) {
     console.log("File error, probably not existing.");
   } else {
@@ -51,7 +51,7 @@ var sensor = {
         }; 
         sensorData.push(dataItem);
 
-        fs.writeFile("tmp/sensordata", JSON.stringify(sensorData), function(err) {
+        fs.writeFile("tmp/sensordata.json", JSON.stringify(sensorData), function(err) {
           if(err) {
               return console.log(err);
           } else {
