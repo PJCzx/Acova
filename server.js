@@ -2,9 +2,6 @@ var express = require('express');
 var schedule = require('node-schedule');
 var fs = require('fs');
 
-var util=require("util");
-var exec=require("child_process").exec;
-
 var sensorLib = require('node-dht-sensor');
 
 var data = {};
