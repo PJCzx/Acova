@@ -10,7 +10,13 @@ var DEBUG = true;
 
 //LIBS USES
 var app = express();
-var mySensor = new sensor(22, 4, IS_RASPBERRY, DEBUG).init();
+var mySensor = new sensor(22, 4, IS_RASPBERRY, DEBUG);
+if (mySensor.initialize()) {
+    console.log("Sensor initialize ok");
+    mySensor.read();
+} else {
+    console.warn('Failed to initialize sensor');
+}
 var myParkingSystem = new parking(7, IS_RASPBERRY, DEBUG);
 var myHeatingSystem = new acova("Salon", 15, 16, IS_RASPBERRY, DEBUG).init();
 
