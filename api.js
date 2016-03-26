@@ -10,7 +10,7 @@ var DEBUG = true;
 
 //LIBS USES
 var app = express();
-var mySensor = new sensor(22, 4, IS_RASPBERRY, DEBUG)
+var mySensor = new sensor(22, 4, IS_RASPBERRY, DEBUG).init();
 var myParkingSystem = new parking(7, IS_RASPBERRY, DEBUG);
 var myHeatingSystem = new acova("Salon", 15, 16, IS_RASPBERRY, DEBUG).init();
 
