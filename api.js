@@ -3,7 +3,7 @@ var os = require('os');
 var express = require('express');
 var acova = require('./lib/acova.js');
 var sensor = require('./lib/temperaturehumidity.js');
-var parking = require('./lib/parking.js');
+//var parking = require('./lib/parking.js');
 
 var IS_RASPBERRY = os.arch() == "arm";
 var DEBUG = true;
@@ -13,13 +13,11 @@ var app = express();
 var mySensor = new sensor(22, 4, IS_RASPBERRY, DEBUG);
 if (mySensor.initialize()) {
     console.log("Sensor initialize ok, reading:");
-   
     console.log( mySensor.read());
-
 } else {
     console.warn('Failed to initialize sensor');
 }
-var myParkingSystem = new parking(7, IS_RASPBERRY, DEBUG);
+//var myParkingSystem = new parking(7, IS_RASPBERRY, DEBUG);
 var myHeatingSystem = new acova("Salon", 15, 16, IS_RASPBERRY, DEBUG).init();
 
 //DEFINING A HOME
@@ -74,7 +72,8 @@ app.get('/status', function (req, res) {
 .get('/off', function (req, res) {
   myHeatingSystem.setOff();
   res.sendStatus(200);
-}).get('/parking', function (req, res) {
+})
+.get('/parking', function (req, res) {
   //myParkingSystem.open();
   res.sendStatus(200);
 });
