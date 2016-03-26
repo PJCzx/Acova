@@ -12,8 +12,10 @@ var DEBUG = true;
 var app = express();
 var mySensor = new sensor(22, 4, IS_RASPBERRY, DEBUG);
 if (mySensor.initialize()) {
-    console.log("Sensor initialize ok");
-    mySensor.read();
+    console.log("Sensor initialize ok, reading:");
+   
+    console.log( mySensor.read());
+
 } else {
     console.warn('Failed to initialize sensor');
 }
