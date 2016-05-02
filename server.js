@@ -1,3 +1,5 @@
+var os = require('os');
+
 var express = require('express');
 var schedule = require('node-schedule');
 var fs = require('fs');
@@ -5,7 +7,9 @@ var fs = require('fs');
 var sys=require("sys");
 var exec=require("child_process").exec;
 
-var sensorLib = require('node-dht-sensor');
+var IS_RASPBERRY = os.cpus()[0].model === 'ARMv6-compatible processor rev 7 (v6l)';
+
+//var sensorLib = require('node-dht-sensor');
 
 var data = {};
 
@@ -17,14 +21,14 @@ var sensorData = [];
 fs.readFile('tmp/sensordata.json','utf8', function(err, data, sensorData) {
   if (err) {
     console.log("File error, probably not existing.");
-    startSensor();
+    //startSensor();
   } else {
     sensorData = JSON.parse(data);
     console.log("sensorData loaded", sensorData);
-    startSensor();
+    //startSensor();
   }
 });
-
+/*
 var sensor;
 var startSensor = function() {
   sensor = {
@@ -74,9 +78,10 @@ var startSensor = function() {
 }
 };
 
-
+*/
 var acova = require('./lib/acova.js');
 var parking = require('./lib/parking.js');
+var temperaturehumidity = require('./lib/temperaturehumidity.js');
 
 var app = express();
 
@@ -84,8 +89,9 @@ var GPIO_POS = 15;
 var GPIO_NEG = 16;
 var GPIO_PARKING = 7;
 
-var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG).init();
-var myParkingSystem = new parking(GPIO_PARKING, false);
+var myHeatingSystem = new acova("Salon", GPIO_POS, GPIO_NEG, IS_RASPBERRY).init();
+var myParkingSystem = new parking(GPIO_PARKING, IS_RASPBERRY);
+var sensor = new temperaturehumidity(22, 4, IS_RASPBERRY).init();
 
 var rules = {};
 var scheduledJobs = {};
@@ -163,17 +169,26 @@ app.use('/', express.static('public'));
 
 //ROUTING
 app.get('/status', function (req, res) {
+  var data = sensor.read();
   var resp = {
     state: myHeatingSystem.getCurrentStateToString(),
     stateCode: myHeatingSystem.getCurrentState(),
-    temperature: data.temperatures && data.temperatures.length > 0 ? data.temperatures[data.temperatures.length - 1].value : 0,
-    humidity: data.temperatures && data.temperatures.length > 0 ? data.humidities[data.humidities.length - 1].value : 0
+    temperature: data.temperature, //data.temperatures && data.temperatures.length > 0 ? data.temperatures[data.temperatures.length - 1].value : 0,
+    humidity: data.humidity //data.temperatures && data.temperatures.length > 0 ? data.humidities[data.humidities.length - 1].value : 0
   };
   res.send(resp);
 })
 .get('/temperature', function (req, res) {
   var resp = data.temperatures[data.temperatures.length - 1];
   res.send(resp);
+})
+.get('/targettemperature', function (req, res, targettemperature) {
+  var resp = {targetTemperature: 99}
+  res.send(resp);
+})
+.get('/targettemperature/:targettemperature', function (req, res, targettemperature) {
+  console.log('Will set temp to:', req.params.targettemperature);
+  res.sendStatus(200);
 })
 .get('/humidity', function (req, res) {
   var resp = data.humidities[data.humidities.length - 1];

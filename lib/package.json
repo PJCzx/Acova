@@ -4,8 +4,8 @@
   "description": "",
   "main": "acova.js",
   "dependencies": {
-    "rpi-gpio": "^0.7.0",
-    "node-dht-sensor": "^0.0.11"
+    "node-dht-sensor": "0.0.11",
+    "rpi-gpio": "^0.7.0"
   },
   "devDependencies": {},
   "scripts": {
