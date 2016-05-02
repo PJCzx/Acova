@@ -11,9 +11,6 @@ var DEBUG = true;
 //LIBS USES
 var app = express();
 var sensor = new temperatureHumidity(22, 4, IS_RASPBERRY, DEBUG).init();
-console.log(sensor.read());
-
-
 //var myParkingSystem = new parking(7, IS_RASPBERRY, DEBUG);
 var myHeatingSystem = new acova("Salon", 15, 16, IS_RASPBERRY, DEBUG).init();
 
