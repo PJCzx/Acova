@@ -2,7 +2,7 @@
 var os = require('os');
 var express = require('express');
 var acova = require('./lib/acova.js');
-var sensor = require('./lib/temperaturehumidity.js');
+var temperatureHumidity = require('./lib/temperaturehumidity.js');
 //var parking = require('./lib/parking.js');
 
 var IS_RASPBERRY = os.arch() == "arm";
@@ -10,13 +10,10 @@ var DEBUG = true;
 
 //LIBS USES
 var app = express();
-var mySensor = new sensor(22, 4, IS_RASPBERRY, DEBUG);
-if (mySensor.initialize()) {
-    console.log("Sensor initialize ok, reading:");
-    console.log( mySensor.read());
-} else {
-    console.warn('Failed to initialize sensor');
-}
+var sensor = new temperatureHumidity(22, 4, IS_RASPBERRY, DEBUG).init();
+console.log(sensor.read());
+
+
 //var myParkingSystem = new parking(7, IS_RASPBERRY, DEBUG);
 var myHeatingSystem = new acova("Salon", 15, 16, IS_RASPBERRY, DEBUG).init();
 
@@ -26,7 +23,7 @@ app.use('/', express.static('public'));
 
 //ROUTING
 app.get('/status', function (req, res) {
-  var sensordata = mySensor.read();
+  var sensordata = sensor.read();
   var resp = {
     state: myHeatingSystem.getCurrentStateToString(),
     stateCode: myHeatingSystem.getCurrentState(),
@@ -34,6 +31,14 @@ app.get('/status', function (req, res) {
     humidity: sensordata.humidity
   };
   res.send(resp);
+})
+.get('/targettemperature', function (req, res, targettemperature) {
+  var resp = {targetTemperature: 99}
+  res.send(resp);
+})
+.get('/targettemperature/:targettemperature', function (req, res, targettemperature) {
+  console.log('Will set temp to:', req.params.targettemperature);
+  res.sendStatus(200);
 })
 .get('/acovastatus', function (req, res) {
   var resp = {
