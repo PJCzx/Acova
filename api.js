@@ -30,6 +30,7 @@ app.get('/status', function (req, res) {
   var resp = {
     state: myHeatingSystem.getCurrentStateToString(),
     stateCode: myHeatingSystem.getCurrentState(),
+    targetTemperature: myHeatingSystem.targetTemperature,
     temperature: sensordata.temperature,
     humidity: sensordata.humidity
   };
@@ -60,6 +61,10 @@ app.get('/status', function (req, res) {
 })
 .get('/comfort', function (req, res) {
   myHeatingSystem.setConfort();
+  res.sendStatus(200);
+})
+.get('/auto', function (req, res) {
+  myHeatingSystem.setAuto();
   res.sendStatus(200);
 })
 .get('/comfort-minus-one', function (req, res) {
