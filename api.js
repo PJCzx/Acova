@@ -18,7 +18,7 @@ if (mySensor.init()) {
     console.warn('Failed to initialize sensor');
 }
 //var myParkingSystem = new parking(7, IS_RASPBERRY, DEBUG);
-var myHeatingSystem = new acova("Salon", 15, 16, IS_RASPBERRY, DEBUG).init();
+var myHeatingSystem = new acova("Salon", 15, 16, IS_RASPBERRY, DEBUG, mySensor).init();
 
 //DEFINING A HOME
 app.use(express.static('public'));
