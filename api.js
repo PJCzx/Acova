@@ -36,12 +36,13 @@ app.get('/status', function (req, res) {
   res.send(resp);
 })
 .get('/targettemperature', function (req, res, targettemperature) {
-  var resp = {targetTemperature: 99}
+  var resp = {targetTemperature: myHeatingSystem.getTargetTemperature()};
   res.send(resp);
 })
 .get('/targettemperature/:targettemperature', function (req, res, targettemperature) {
   console.log('Will set temp to:', req.params.targettemperature);
-  res.sendStatus(200);
+  if(myHeatingSystem.setTargetTemperature(parseFloat(req.params.targettemperature))) res.sendStatus(200);
+  else res.sendStatus(500);
 })
 .get('/acovastatus', function (req, res) {
   var resp = {
