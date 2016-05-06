@@ -2,15 +2,17 @@
 
 var http = require('http');
 
-var url = 'http://.../';
+var url = 'http://....com/';
 
 http.get(url + "status", function(res) {
   res.on('data', function (chunk) {
-  	var json = JSON.parse(chunk);
+    var json = JSON.parse(chunk);
     console.log(json.state);
     console.log("---");
-    console.log(json.temperature + "°C");
+    console.log(json.temperature + "°C (" + json.targetTemperature + "°C)" );
     console.log(json.humidity + "%");
+    console.log("Auto (" + json.targetTemperature + "°C)" +"| href=" + url + "auto");
+    console.log("Target | href=" + url + "targetTemperature/");
     console.log("Comfort | href=" + url + "comfort");
     console.log("Comfort -1°C | href=" + url + "comfort-minus-one");
     console.log("Comfort -2°C | href=" + url + "comfort-minus-two");
