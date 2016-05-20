@@ -1,3 +1,5 @@
+/* jshint node: true */
+"use strict";
 //REQUIRED LIBS
 var os = require('os');
 var express = require('express');
@@ -36,11 +38,11 @@ app.get('/status', function (req, res) {
   };
   res.send(resp);
 })
-.get('/targettemperature', function (req, res, targettemperature) {
+.get('/targettemperature', function (req, res) {
   var resp = {targetTemperature: myHeatingSystem.getTargetTemperature()};
   res.send(resp);
 })
-.get('/targettemperature/:targettemperature', function (req, res, targettemperature) {
+.get('/targettemperature/:targettemperature', function (req, res) {
   console.log('Will set temp to:', req.params.targettemperature);
   if(myHeatingSystem.setTargetTemperature(parseFloat(req.params.targettemperature))) res.sendStatus(200);
   else res.sendStatus(500);
