@@ -30,8 +30,8 @@ app.use('/', express.static('public'));
 app.get('/status', function (req, res) {
   var sensordata = mySensor.read();
   var resp = {
-    state: myHeatingSystem.getCurrentStateToString(),
-    stateCode: myHeatingSystem.getCurrentState(),
+    targetState: myHeatingSystem.getTargetStateToString(),
+    targetStateCode: myHeatingSystem.getTargetState(),
     targetTemperature: myHeatingSystem.targetTemperature,
     temperature: sensordata.temperature,
     humidity: sensordata.humidity
@@ -49,8 +49,8 @@ app.get('/status', function (req, res) {
 })
 .get('/acovastatus', function (req, res) {
   var resp = {
-    state: myHeatingSystem.getCurrentStateToString(),
-    stateCode: myHeatingSystem.getCurrentState(),
+    targetState: myHeatingSystem.getTargetStateToString(),
+    targetStateCode: myHeatingSystem.getTargetState(),
   };
   res.send(resp);
 })
