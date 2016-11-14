@@ -2,14 +2,15 @@
 
 var http = require('http');
 
-var url = 'http://....com/';
+var url = 'http://home.pierrejuliencazaux.com:3001/';
 
 http.get(url + "status", function(res) {
   res.on('data', function (chunk) {
     var json = JSON.parse(chunk);
-    console.log(json.state);
+    console.log(json.targetState);
     console.log("---");
-    console.log(json.temperature + "°C (" + json.targetTemperature + "°C)" );
+    console.log(json.temperature + "°C (" + json.targetTemperature + "°C)");
+    console.log("Status: " + json.currentHeatingCoolingState + " (0:OFF 1:HEAT 2:COOL)");
     console.log(json.humidity + "%");
     console.log("Auto (" + json.targetTemperature + "°C)" +"| href=" + url + "auto");
     console.log("Target | href=" + url + "targetTemperature/");
@@ -22,5 +23,6 @@ http.get(url + "status", function(res) {
 
   });
 }).on('error', function(e) {
-  console.log(`Got error: ${e.message}`);
+  //console.log(`Got error: ${e.message}`);
+  console.log(`-`);
 });
