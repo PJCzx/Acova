@@ -32,9 +32,9 @@ app.get('/status', function (req, res) {
   var resp = {
     targetState: myHeatingSystem.getTargetStateToString(),
     targetHeatingCoolingState: myHeatingSystem.getTargetState(),
-    currentHeatingCoolingState: myHeatingSystem.currentHeatingCoolingState,
     targetTemperature: myHeatingSystem.targetTemperature,
-    temperature: sensordata.temperature,
+    currentHeatingCoolingState: myHeatingSystem.currentHeatingCoolingState,
+    currentTemperature: sensordata.temperature, //prev temperature
     currentRelativeHumidity: sensordata.humidity //prev humidity
   };
   res.send(resp);

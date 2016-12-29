@@ -9,7 +9,7 @@ http.get(url + "status", function(res) {
     var json = JSON.parse(chunk);
     console.log(json.targetState);
     console.log("---");
-    console.log(json.temperature + "°C (" + json.targetTemperature + "°C)");
+    console.log(json.currentTemperature + "°C (" + json.targetTemperature + "°C)");
     console.log("Status: " + json.currentHeatingCoolingState + " (0:OFF 1:HEAT 2:COOL)");
     console.log(json.currentRelativeHumidity + "%");
     console.log("Auto (" + json.targetTemperature + "°C)" +"| href=" + url + "auto");
